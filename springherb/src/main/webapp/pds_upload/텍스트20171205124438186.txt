@@ -1,0 +1,73 @@
+jsp 3일차
+
+1. 인코딩 생각
+   - post는 request.setCharacterEncoding("euc-kr");
+   - get은 server.xml
+
+EUC-KR - 영어, 숫자 1바이트 // 한글 2바이트
+
+UTF-8 - 영어, 숫자 1바이트 // 한글 3바이트
+
+인코딩 -> 바이너리형태로 변환
+디코딩 -> 문자로 변환
+
+
+
+
+
+
+
+
+※서블릿 ★★★★★
+=> 서버에서만 해석되어 실행 되는 클래스 : 인터페이스 Servlet를 구현한 GenericServlet클래스를 상속받은 HttpServlet 클래스를 상속받아서 서블릿을 구현 해야한다.
+
+main() 메서드가 없고, service()메서드가 웹 컨테이너에 의해 호출된다
+
+
+
+모델2 를 하기 위함.
+
+HttpServlet은 doPost(), doGet()메서드를 오버라이딩 하여 사용함.
+
+servlet-api.jar 필요함
+
+
+※ web.xml
+=> 서블릿 URL지정
+<servlet>
+	<servlet-name>nowsv</servlet-name>
+	<servlet-class>com.test.NowServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>nowsv</servlet-name>
+	<url-pattern>/now</url-pattern>
+</servlet-mapping>
+
+==>설명 : nowsv라는 URI가 들어오면 해당 서블릿을 찾고 매핑된 해당 클래스가 실행
+
+※ PrintWriter out = response.getWriter(); --> 출력스트림 객체 생성해서 사용해야함.
+out.print("브라우저 출력 내용");
+
+※ 웹 컨테이너 ★★
+- 서블릿 클래스의 해석 및 관련 객체들을 관리
+ 1) 서블릿 관리
+   - Http Request와 Http Response 객체를 만들어 서블릿의 doPost(), doGet()메서드중 하나를 호출 한다.
+ 2) 라이프 사이클 관리
+   - 서블릿 클래스 로딩하여 인스턴스화 시킴
+   - init()메서드로 초기화
+   - 요청시 서블릿 메서드 호출 (service(), doGet(), doPost()
+
+서블릿은 쓰레드를 생성
+
+※ 서블릿 라이프사이클 ★★★
+
+서버실행후 
+
+클라이언트가 최초 브라우저 접속시
+
+1. 클래스가 로딩 되고, 인스턴스화 시킨다
+2. init()메서드로 서블릿형태로 초기화 시켜준다.
+3. 요청을 service()로 실행시키는데 이때 쓰레드 안에서 실행된다. // 다른 클라이언트가 와도 두번째 클라이언트 부터는 이부분 부터 실행 된다.
+4. 서버가 종료되거나, 서블릿 소스를 수정하면 destory()로 초기화된다. 이후 실행되면 다시 1번부터 실행
+
+
